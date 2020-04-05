@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Maths</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="maths">
+        <div class="stats">Correct: {{ correct }}; Wrong: {{ wrong }}</div>
+        <div class="row">{{ op1 }}</div>
+        <div class="row"><span>+ </span><span>{{ op2 }}</span></div>
+        <div class="row">
+            <hr size="2px">
+        </div>
+        <div class="row">
+            <input id="answer" type="text" size="4" v-model="answer" ref="answer">
+        </div>
+        <div class="row">
+            <button v-on:click="judge">Submit</button>
+            <button v-on:click="refresh">Next</button>
+        </div>
+
+        <div>{{ result }}</div>
+    </div>
+    <script>
+        function getRandom() {
+            var result = 0;
+            while (result < 100 || result > 999) {
+                result = Math.floor(Math.random() * 1000);
+            }
+            return result;
+        }
+        var app7 = new Vue({
+            el: '#maths',
+            data: {
+                correct: 0,
+                wrong: 0,
+                correct: 0,
+                wrong: 0,
+                op1: getRandom(),
+                op2: getRandom(),
+                answer: "",
+                result: "",
+            },
+            methods: {
+                judge: function () {
+                    var answer = parseInt(this.answer)
+                    if (answer == this.op1 + this.op2) {
+                        this.result = "Correct!";
+                        this.correct ++;
+                    } else {
+                        this.result = "Wrong!"
+                        this.wrong ++;
+                    }
+                },
+                refresh: function () {
+                    this.op1 = getRandom();
+                    this.op2 = getRandom();
+                    this.answer = "";
+                    this.result = "";
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
