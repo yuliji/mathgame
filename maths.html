@@ -9,7 +9,7 @@
 
 <body>
     <main id="maths">
-        <div class="stats">Correct: {{ correct }}; Wrong: {{ wrong }}</div>
+        <div class="stats">Correct: {{ correct }}; Wrong: {{ wrong }}; Timer: {{ h }}:{{ m }}:{{ s }}</div>
         <div class="row">{{ op1 }}</div>
         <div class="row"><span> {{ op }} </span><span>{{ op2 }}</span></div>
         <div class="row">
@@ -59,6 +59,14 @@
                 answer: "",
                 result: "",
                 result_class: "green",
+                timer: "",
+                h: 0,
+                m: 0,
+                s: 0,
+            },
+            mounted: function () {
+                    console.log("mounted")
+                    this.timer = setInterval(this.get, 1000);
             },
             methods: {
                 judge: function () {
@@ -92,6 +100,17 @@
                     }
                     this.answer = "";
                     this.result = "";
+                },
+                get: function() {
+                    this.s ++;
+                    if (this.s == 60){
+                        this.s = 0;
+                        this.m ++;
+                    }
+                    if (this.m == 60){
+                        this.m = 0;
+                        this.h ++;
+                    }
                 }
             }
         })
