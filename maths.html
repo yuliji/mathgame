@@ -23,7 +23,7 @@
             <button v-on:click="refresh">Next</button>
         </div>
 
-        <div>{{ result }}</div>
+        <div id="result"><span v-bind:class="result_class">{{ result }}</span></div>
     </main>
     <script>
         function getRandom() {
@@ -58,6 +58,7 @@
                 op2: getRandom(),
                 answer: "",
                 result: "",
+                result_class: "green",
             },
             methods: {
                 judge: function () {
@@ -71,9 +72,11 @@
 
                     if (answer == expected) {
                         this.result = "Correct!";
+                        this.result_class = "green";
                         this.correct ++;
                     } else {
                         this.result = "Wrong!"
+                        this.result_class = "red";
                         this.wrong ++;
                     }
                 },
