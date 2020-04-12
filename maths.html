@@ -31,7 +31,7 @@
             </div>
             <div class="row">
                 <div class="col-6">
-                    <input class="form-control text-right wide-ls p-0" id="answer" type="text" size="4" v-model="answer" ref="answer">
+                    <input ref="answer" class="form-control text-right wide-ls p-0" id="answer" type="text" size="4" v-model="answer" ref="answer">
                 </div>
             </div>
             <div class="row mt-1">
@@ -95,6 +95,8 @@
             mounted: function () {
                 console.log("mounted")
                 this.timer = setInterval(this.get, 1000);
+                this.$refs.answer.focus()
+
             },
             methods: {
                 judge: function () {
@@ -129,6 +131,7 @@
                     this.answer = "";
                     this.result = "";
                     this.result_class = "";
+                    this.$refs.answer.focus()
                 },
                 get: function () {
                     this.s++;
