@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Maths</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <main id="maths">
+        <div class="container">
+            <div class="row">
+                <div class="col-6">Correct: {{ correct }}; Wrong: {{ wrong }}</div>
+            </div>
+            <div class="row">
+                <div class="col-6">Timer: {{ ("0"+h).slice(-2) }}:{{ ("0"+m).slice(-2) }}:{{ ("0"+s).slice(-2) }}</div>
+            </div>
+            <div class="row text-right wide-ls">
+                <div class="col-6">{{ op1 }} ÷ {{ op2 }} = </div>
+                <div class="col-6"><input ref="answer" class="form-control" id="answer" type="text"
+                        v-model="answer" ref="answer"> R <input ref="answer" class="form-control" id="answer"
+                        type="text" v-model="answer" ref="answer"> </div>
+
+
+            </div>
+
+            <div class="row mt-1">
+                <div class="col-3">
+
+                    <button v-on:click="judge" class="btn btn-primary">Submit</button>
+                </div>
+                <div class="col-3">
+
+                    <button v-on:click="refresh" class="btn btn-primary">Next</button>
+                </div>
+            </div>
+            <div id="result" class="row mt-2">
+                <div class="col-6">
+
+                    <div v-bind:class="result_class">{{ result }}</div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <script>
+        function getRandomInt(min, max) {
+            min = Math.ceil(min);
+            max = Math.floor(max);
+            return Math.floor(Math.random() * (max - min + 1)) + min;
+        }
+
+        function randomOp() {
+            var r = Math.random();
+            console.log(r);
+            var op;
+            if (r <= 0.5) {
+                op = '+'
+            } else {
+                op = '-'
+            }
+            return op;
+        }
+
+        var app7 = new Vue({
+            el: '#maths',
+            data: {
+                correct: 0,
+                wrong: 0,
+                correct: 0,
+                wrong: 0,
+                op: "+",
+                op1: getRandomInt(10, 99),
+                op2: getRandomInt(1, 9),
+                answer: "",
+                result: "",
+                result_class: "green",
+                timer: "",
+                h: 0,
+                m: 0,
+                s: 0,
+            },
+            mounted: function () {
+                console.log("mounted")
+                this.timer = setInterval(this.get, 1000);
+                this.$refs.answer.focus()
+
+            },
+            methods: {
+                judge: function () {
+                    var answer = parseInt(this.answer)
+                    var expected;
+                    if (this.op == "+") {
+                        expected = this.op1 + this.op2;
+                    } else if (this.op == "-") {
+                        expected = this.op1 - this.op2;
+                    }
+
+                    if (answer == expected) {
+                        this.result = "Correct!";
+                        this.result_class = "alert-success";
+                        this.correct++;
+                    } else {
+                        this.result = "Wrong!"
+                        this.result_class = "alert-danger";
+                        this.wrong++;
+                    }
+                },
+                refresh: function () {
+                    this.op = randomOp();
+                    this.op1 = getRandom();
+                    this.op2 = getRandom();
+                    if (this.op == "-" && this.op1 < this.op2) {
+                        var temp;
+                        temp = this.op1;
+                        this.op1 = this.op2;
+                        this.op2 = temp;
+                    }
+                    this.answer = "";
+                    this.result = "";
+                    this.result_class = "";
+                    this.$refs.answer.focus()
+                },
+                get: function () {
+                    this.s++;
+                    if (this.s == 60) {
+                        this.s = 0;
+                        this.m++;
+                    }
+                    if (this.m == 60) {
+                        this.m = 0;
+                        this.h++;
+                    }
+                }
+            }
+        })
+    </script>
+</body>
+
+</html>
