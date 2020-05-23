@@ -19,14 +19,11 @@
                 <div class="col-6">Timer: {{ ("0"+h).slice(-2) }}:{{ ("0"+m).slice(-2) }}:{{ ("0"+s).slice(-2) }}</div>
             </div>
             <div class="row text-right wide-ls">
-                <div class="col-6">{{ op1 }} ÷ {{ op2 }} = </div>
-                <div class="col-6"><input ref="answer" class="form-control" id="answer" type="text"
-                        v-model="answer" ref="answer"> R <input ref="answer" class="form-control" id="answer"
-                        type="text" v-model="answer" ref="answer"> </div>
-
-
+                <div class="col-6">{{ divident }} ÷ {{ divisor }} = </div>
+                <div class="col-6"><input ref="answer" class="form-control" id="quotient" type="text"
+                        v-model="quotient" ref="quotient"> R <input ref="remainder" class="form-control" id="remainder"
+                        type="text" v-model="remainder" ref="remainder"> </div>
             </div>
-
             <div class="row mt-1">
                 <div class="col-3">
 
@@ -52,18 +49,6 @@
             return Math.floor(Math.random() * (max - min + 1)) + min;
         }
 
-        function randomOp() {
-            var r = Math.random();
-            console.log(r);
-            var op;
-            if (r <= 0.5) {
-                op = '+'
-            } else {
-                op = '-'
-            }
-            return op;
-        }
-
         var app7 = new Vue({
             el: '#maths',
             data: {
@@ -72,9 +57,10 @@
                 correct: 0,
                 wrong: 0,
                 op: "+",
-                op1: getRandomInt(10, 99),
-                op2: getRandomInt(1, 9),
-                answer: "",
+                divident: getRandomInt(10, 99),
+                divisor: getRandomInt(1, 9),
+                quotient: "",
+                remainder: "",
                 result: "",
                 result_class: "green",
                 timer: "",
@@ -90,15 +76,15 @@
             },
             methods: {
                 judge: function () {
-                    var answer = parseInt(this.answer)
-                    var expected;
-                    if (this.op == "+") {
-                        expected = this.op1 + this.op2;
-                    } else if (this.op == "-") {
-                        expected = this.op1 - this.op2;
+                    var quotient = parseInt(this.quotient);
+                    var remainder;
+                    if (this.remainder == ""){
+                        remainder = 0;
+                    }else{
+                        remainder = parseInt(this.remainder);
                     }
 
-                    if (answer == expected) {
+                    if (quotient * this.divisor + remainder == this.divident) {
                         this.result = "Correct!";
                         this.result_class = "alert-success";
                         this.correct++;
@@ -109,16 +95,11 @@
                     }
                 },
                 refresh: function () {
-                    this.op = randomOp();
-                    this.op1 = getRandom();
-                    this.op2 = getRandom();
-                    if (this.op == "-" && this.op1 < this.op2) {
-                        var temp;
-                        temp = this.op1;
-                        this.op1 = this.op2;
-                        this.op2 = temp;
-                    }
-                    this.answer = "";
+                    this.divident = getRandomInt(10, 99)
+                    this.divisor = getRandomInt(1, 9);
+
+                    this.quotient = "";
+                    this.remainder = "";
                     this.result = "";
                     this.result_class = "";
                     this.$refs.answer.focus()
